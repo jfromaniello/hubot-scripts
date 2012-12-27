@@ -9,38 +9,38 @@
 #   None
 #
 # Commands:
-#   hubot who do you know - List all the users with github logins tracked by Hubot
-#   hubot i am `maddox` - map your user to the github login `maddox`
-#   hubot who am i - reveal your mapped github login
-#   hubot forget me - de-map your user to your github login
+#   hubot who do you know on github - List all the users with github logins tracked by Hubot
+#   hubot i am `maddox` on github - map your user to the github login `maddox`
+#   hubot who am i on github - reveal your mapped github login
+#   hubot forget my github handler - de-map your user to your github login
 #
 # Author:
 #   maddox
 
 module.exports = (robot) ->
 
-  robot.respond /who do you know(\?)?$/i, (msg) ->
+  robot.respond /who do you know on github/i, (msg) ->
     theReply = "Here is who I know:\n"
 
-    for own key, user of robot.brain.users()
+    for own key, user of robot.brain.data.users
       if(user.githubLogin)
         theReply += user.name + " is " + user.githubLogin + "\n"
 
     msg.send theReply
 
-  robot.respond /i am ([a-z0-9-]+)\s*$/i, (msg) ->
+  robot.respond /i am ([a-z0-9-]+) on github/i, (msg) ->
     githubLogin = msg.match[1]
     msg.message.user.githubLogin = githubLogin
     msg.send "Ok, you are " + githubLogin + " on GitHub"
 
-  robot.respond /who am i\s*$/i, (msg) ->
+  robot.respond /who am i on github/i, (msg) ->
     user = msg.message.user
     if user.githubLogin
       msg.reply "You are known as " + user.githubLogin + " on GitHub"
     else
       msg.reply "I don't know who you are. You should probably identify yourself with your GitHub login"
 
-  robot.respond /forget me/i, (msg) ->
+  robot.respond /forget my github handler/i, (msg) ->
     user = msg.message.user
     user.githubLogin = null
 
